@@ -1,41 +1,1515 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Aivelo</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aivelo – KI-Lösungen für Fitness, Wellness & Gesundheit</title>
+  <meta name="description" content="Aivelo unterstützt Unternehmen aus Fitness, Wellness, Spa und Gesundheit dabei, KI praxisnah in ihre Abläufe zu integrieren – mit Fokus auf Entlastung, Effizienz und bessere Reaktionszeiten.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Mulish:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
   <style>
-    body { font-family: Arial, sans-serif; max-width: 860px; margin: 40px auto; padding: 0 16px; line-height: 1.55; color:#111; }
-    .wrap { border:1px solid #eee; border-radius:12px; padding:24px; }
-    .logo { font-size: 34px; font-weight: 700; margin-bottom: 6px; }
-    .tag { color:#555; margin-bottom:20px; }
-    .small { color:#666; font-size:14px; }
-    footer { margin-top: 30px; padding-top: 18px; border-top:1px solid #eee; }
-    a { color:#111; }
+    /* =====================
+       RESET & BASE
+    ===================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:            #0b0d12;
+      --panel:         #121722;
+      --panel-2:       #161d2b;
+      --border:        rgba(255,255,255,0.07);
+      --border-hover:  rgba(255,255,255,0.14);
+      --text:          #eef2ff;
+      --text-secondary:#b8c0d6;
+      --text-muted:    #6e7a96;
+      --accent:        #e30613;
+      --accent-light:  #ff4b4b;
+      --accent-glow:   rgba(227, 6, 19, 0.18);
+      --accent-glow-sm:rgba(227, 6, 19, 0.10);
+      --radius:        14px;
+      --radius-sm:     8px;
+      --radius-lg:     20px;
+      --transition:    0.22s ease;
+      --font-display:  'Syne', sans-serif;
+      --font-body:     'Mulish', sans-serif;
+      --container:     1160px;
+      --nav-h:         72px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.65;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    .container {
+      width: 100%;
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* =====================
+       TYPOGRAPHY
+    ===================== */
+    h1, h2, h3, h4 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      line-height: 1.18;
+      color: var(--text);
+    }
+
+    .section-label {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-light);
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-size: clamp(26px, 4vw, 38px);
+      font-family: var(--font-display);
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .section-sub {
+      font-size: 17px;
+      color: var(--text-secondary);
+      max-width: 560px;
+      line-height: 1.7;
+    }
+
+    .accent { color: var(--accent-light); }
+
+    /* =====================
+       BUTTONS
+    ===================== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      padding: 13px 26px;
+      cursor: pointer;
+      transition: all var(--transition);
+      border: none;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 0 0 0 var(--accent-glow);
+    }
+    .btn-primary:hover {
+      background: var(--accent-light);
+      box-shadow: 0 6px 28px var(--accent-glow);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1.5px solid var(--border-hover);
+    }
+    .btn-outline:hover {
+      border-color: rgba(255,255,255,0.30);
+      background: rgba(255,255,255,0.04);
+      transform: translateY(-1px);
+    }
+
+    /* =====================
+       NAVIGATION
+    ===================== */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: var(--nav-h);
+      background: rgba(11, 13, 18, 0.88);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+      transition: background var(--transition);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      gap: 32px;
+    }
+
+    .nav-logo img {
+      height: 34px;
+      width: auto;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      margin-left: auto;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: color var(--transition);
+      letter-spacing: 0.01em;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-cta {
+      margin-left: 12px;
+      padding: 10px 20px;
+      font-size: 14px;
+    }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      margin-left: auto;
+    }
+    .nav-toggle span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: all var(--transition);
+    }
+
+    .nav-mobile {
+      display: none;
+      position: fixed;
+      top: var(--nav-h);
+      left: 0; right: 0;
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+      z-index: 99;
+      padding: 20px 24px 24px;
+    }
+    .nav-mobile.open { display: block; }
+    .nav-mobile ul { display: flex; flex-direction: column; gap: 4px; }
+    .nav-mobile a {
+      display: block;
+      padding: 12px 14px;
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border-radius: var(--radius-sm);
+      transition: all var(--transition);
+    }
+    .nav-mobile a:hover { background: rgba(255,255,255,0.05); color: var(--text); }
+    .nav-mobile .btn { margin-top: 12px; width: 100%; justify-content: center; }
+
+    /* =====================
+       HERO
+    ===================== */
+    .hero {
+      position: relative;
+      padding: calc(var(--nav-h) + 80px) 0 96px;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(255,255,255,0.035) 1px, transparent 1px);
+      background-size: 36px 36px;
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: -120px; left: 50%;
+      transform: translateX(-50%);
+      width: 900px;
+      height: 600px;
+      background: radial-gradient(ellipse at center, rgba(227, 6, 19, 0.09) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(227, 6, 19, 0.1);
+      border: 1px solid rgba(227, 6, 19, 0.25);
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent-light);
+      margin-bottom: 24px;
+      letter-spacing: 0.02em;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-light);
+      flex-shrink: 0;
+    }
+
+    .hero h1 {
+      font-size: clamp(34px, 5vw, 56px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 22px;
+    }
+
+    .hero-sub {
+      font-size: 17px;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      max-width: 520px;
+      margin-bottom: 32px;
+    }
+
+    .hero-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 36px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+    .chip::before {
+      content: '✓';
+      font-size: 11px;
+      color: var(--accent-light);
+      font-weight: 700;
+    }
+
+    .hero-ctas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    /* KPI Card (right side) */
+    .hero-kpi-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-kpi-card::before {
+      content: '';
+      position: absolute;
+      top: -1px; left: 24px; right: 24px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      border-radius: 2px;
+    }
+
+    .kpi-title {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    .kpi-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .kpi-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      transition: border-color var(--transition), background var(--transition);
+    }
+    .kpi-item:hover {
+      border-color: var(--border-hover);
+      background: rgba(255,255,255,0.05);
+    }
+
+    .kpi-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-sm);
+      background: var(--accent-glow-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+    }
+
+    .kpi-text {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.3;
+    }
+    .kpi-text small {
+      display: block;
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 400;
+      margin-top: 2px;
+    }
+
+    /* =====================
+       SECTIONS LAYOUT
+    ===================== */
+    section { padding: 96px 0; }
+    section:nth-child(odd) { background: var(--bg); }
+    section:nth-child(even) { background: rgba(18, 23, 34, 0.5); }
+
+    .section-head {
+      margin-bottom: 56px;
+    }
+
+    /* =====================
+       PROBLEM / SOLUTION
+    ===================== */
+    .ps-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .ps-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 36px;
+      transition: border-color var(--transition);
+    }
+    .ps-card:hover { border-color: var(--border-hover); }
+
+    .ps-card-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .ps-card-subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+    }
+
+    .ps-card-tag {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .tag-problem {
+      background: rgba(255,75,75,0.12);
+      color: #ff7878;
+      border: 1px solid rgba(255,75,75,0.2);
+    }
+    .tag-solution {
+      background: rgba(34,197,94,0.10);
+      color: #4ade80;
+      border: 1px solid rgba(34,197,94,0.2);
+    }
+
+    .ps-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .ps-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      background: rgba(255,255,255,0.02);
+    }
+
+    .ps-dot {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .dot-problem {
+      background: rgba(255,75,75,0.15);
+      color: #ff7878;
+    }
+    .dot-solution {
+      background: rgba(34,197,94,0.12);
+      color: #4ade80;
+    }
+
+    .ps-item-text {
+      font-size: 14.5px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    /* =====================
+       PROCESS
+    ===================== */
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      position: relative;
+    }
+
+    .process-grid::before {
+      content: '';
+      position: absolute;
+      top: 52px;
+      left: calc(12.5% + 28px);
+      right: calc(12.5% + 28px);
+      height: 1px;
+      background: linear-gradient(90deg, var(--border), rgba(227,6,19,0.3), var(--border));
+      pointer-events: none;
+    }
+
+    .process-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 30px 24px 28px;
+      transition: border-color var(--transition), transform var(--transition);
+      position: relative;
+    }
+    .process-card:hover {
+      border-color: rgba(227,6,19,0.3);
+      transform: translateY(-3px);
+    }
+
+    .process-num {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 0 0 6px var(--accent-glow-sm);
+    }
+
+    .process-card h3 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .process-card p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    /* =====================
+       ABOUT
+    ===================== */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .about-photo-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .about-photo-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+
+    .about-photo-footer {
+      padding: 20px 22px;
+    }
+
+    .about-name {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .about-role {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .about-content h2 {
+      font-size: clamp(24px, 3.5vw, 34px);
+      margin-bottom: 18px;
+    }
+
+    .about-text {
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      margin-bottom: 32px;
+    }
+
+    .about-why {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px 30px;
+    }
+
+    .about-why-title {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: var(--text);
+    }
+
+    .about-why-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .about-why-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .about-why-item::before {
+      content: '→';
+      color: var(--accent-light);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* =====================
+       FAQ
+    ===================== */
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .faq-item {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color var(--transition);
+    }
+    .faq-item:hover { border-color: var(--border-hover); }
+    .faq-item[open] {
+      border-color: rgba(227,6,19,0.25);
+    }
+
+    .faq-item summary {
+      padding: 20px 24px;
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      color: var(--text);
+      transition: color var(--transition);
+      user-select: none;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after {
+      content: '+';
+      font-size: 22px;
+      color: var(--accent-light);
+      line-height: 1;
+      flex-shrink: 0;
+      transition: transform var(--transition);
+      font-family: var(--font-body);
+      font-weight: 300;
+    }
+    .faq-item[open] summary::after {
+      transform: rotate(45deg);
+    }
+
+    .faq-answer {
+      padding: 0 24px 22px;
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    /* =====================
+       CTA / CONTACT
+    ===================== */
+    .cta-section {
+      background: var(--bg) !important;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      bottom: -200px; right: -200px;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(227,6,19,0.07) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .cta-grid {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .cta-content h2 {
+      font-size: clamp(26px, 4vw, 42px);
+      margin-bottom: 16px;
+    }
+
+    .cta-sub {
+      font-size: 17px;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      margin-bottom: 36px;
+      max-width: 480px;
+    }
+
+    .cta-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .contact-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+    }
+
+    .contact-card-title {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .contact-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .contact-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: var(--radius-sm);
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .contact-info {
+      font-size: 13px;
+    }
+
+    .contact-info-label {
+      color: var(--text-muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .contact-info a,
+    .contact-info span {
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .contact-info a:hover { color: var(--accent-light); }
+
+    /* Impressum Card */
+    .impressum-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      margin-top: 24px;
+    }
+
+    .impressum-card-title {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .impressum-text {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+
+    .impressum-text strong {
+      color: var(--text-secondary);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .impressum-links {
+      display: flex;
+      gap: 16px;
+      margin-top: 14px;
+    }
+
+    .impressum-links a {
+      font-size: 13px;
+      color: var(--text-muted);
+      text-decoration: underline;
+      text-decoration-color: rgba(255,255,255,0.15);
+      transition: color var(--transition);
+    }
+    .impressum-links a:hover { color: var(--text-secondary); }
+
+    /* =====================
+       FOOTER
+    ===================== */
+    .footer {
+      background: var(--panel);
+      border-top: 1px solid var(--border);
+      padding: 36px 0;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .footer-logo img { height: 28px; width: auto; }
+
+    .footer-copy {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+    .footer-links a {
+      font-size: 13px;
+      color: var(--text-muted);
+      transition: color var(--transition);
+    }
+    .footer-links a:hover { color: var(--text-secondary); }
+
+    /* =====================
+       SCROLL ANIMATIONS
+    ===================== */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .fade-up-delay-1 { transition-delay: 0.08s; }
+    .fade-up-delay-2 { transition-delay: 0.16s; }
+    .fade-up-delay-3 { transition-delay: 0.24s; }
+    .fade-up-delay-4 { transition-delay: 0.32s; }
+
+    /* =====================
+       DIVIDER
+    ===================== */
+    .section-divider {
+      width: 48px;
+      height: 3px;
+      background: var(--accent);
+      border-radius: 3px;
+      margin-top: 16px;
+    }
+
+    /* =====================
+       RESPONSIVE
+    ===================== */
+    @media (max-width: 1024px) {
+      .hero-grid { grid-template-columns: 1fr 320px; gap: 32px; }
+      .process-grid { grid-template-columns: repeat(2, 1fr); gap: 18px; }
+      .process-grid::before { display: none; }
+      .about-grid { grid-template-columns: 280px 1fr; gap: 36px; }
+    }
+
+    @media (max-width: 860px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero-kpi-card { max-width: 480px; }
+      .ps-grid { grid-template-columns: 1fr; }
+      .about-grid { grid-template-columns: 1fr; }
+      .about-photo-card { max-width: 320px; }
+      .cta-grid { grid-template-columns: 1fr; }
+      .cta-section::before { display: none; }
+      .about-why-list { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      section { padding: 72px 0; }
+      .nav-links, .nav-cta { display: none; }
+      .nav-toggle { display: flex; }
+      .process-grid { grid-template-columns: 1fr 1fr; }
+      .footer-inner { flex-direction: column; text-align: center; gap: 16px; }
+    }
+
+    @media (max-width: 520px) {
+      .process-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 30px; }
+    }
   </style>
 </head>
+
 <body>
-  <div class="wrap">
-    <div class="logo">Aivelo</div>
-    <div class="tag">KI-Agentur für messbares Wachstum und effiziente Prozesse im Fitnessmarkt.</div>
 
-    <p class="small">Website im Aufbau.</p>
-    <p><a href="#impressum">Zum Impressum</a></p>
+  <!-- ========== NAVIGATION ========== -->
+  <nav class="nav" id="main-nav">
+    <div class="nav-inner container">
+      <a href="#" class="nav-logo">
+        <img src="logo-aivelo.png" alt="Aivelo Logo">
+      </a>
+      <ul class="nav-links">
+        <li><a href="#loesungen">Lösungen</a></li>
+        <li><a href="#prozess">Prozess</a></li>
+        <li><a href="#ueber-mich">Über mich</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#kontakt">Kontakt</a></li>
+      </ul>
+      <a href="https://calendly.com/matyjakevin/15min" target="_blank" rel="noopener" class="btn btn-primary nav-cta">Termin buchen</a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menü öffnen">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
 
-    <footer id="impressum">
-      <h2>Impressum</h2>
-      <p><strong>Angaben gemäß § 5 TMG</strong></p>
-      <p>
-        Kevin Matyja<br>
-        (Geschäftsbezeichnung: Aivelo)<br>
-        Lengerckestraße 40<br>
-        22041 Hamburg<br>
-        Deutschland
-      </p>
-      <p>E-Mail: kevinmatyja@aivelo.de</p>
-      <p>USt-IdNr. gemäß § 27 a UStG: DE455880871</p>
-      <p>Hinweis: Aivelo ist die Geschäftsbezeichnung von Kevin Matyja.</p>
-    </footer>
+  <!-- Mobile Nav -->
+  <div class="nav-mobile" id="nav-mobile">
+    <ul>
+      <li><a href="#loesungen" class="mobile-link">Lösungen</a></li>
+      <li><a href="#prozess" class="mobile-link">Prozess</a></li>
+      <li><a href="#ueber-mich" class="mobile-link">Über mich</a></li>
+      <li><a href="#faq" class="mobile-link">FAQ</a></li>
+      <li><a href="#kontakt" class="mobile-link">Kontakt</a></li>
+    </ul>
+    <a href="https://calendly.com/matyjakevin/15min" target="_blank" rel="noopener" class="btn btn-primary">Termin buchen</a>
   </div>
+
+  <!-- ========== HERO ========== -->
+  <section class="hero" id="home">
+    <div class="container">
+      <div class="hero-grid">
+
+        <div class="hero-content">
+          <div class="hero-badge fade-up">KI für Fitness, Wellness &amp; Gesundheit</div>
+          <h1 class="fade-up fade-up-delay-1">
+            Weniger Aufwand.<br>Bessere Prozesse.<br>
+            <span class="accent">Mehr Umsatzpotenzial.</span>
+          </h1>
+          <p class="hero-sub fade-up fade-up-delay-2">
+            Ich unterstütze Unternehmen aus Fitness, Wellness, Spa und Gesundheit dabei,
+            KI praxisnah in ihre Abläufe zu integrieren – mit Fokus auf Entlastung,
+            Effizienz und bessere Reaktionszeiten.
+          </p>
+          <div class="hero-chips fade-up fade-up-delay-3">
+            <span class="chip">Praxisnah statt Buzzwords</span>
+            <span class="chip">Fokus auf Prozesse &amp; Effizienz</span>
+            <span class="chip">Verständlich für Teams &amp; Verwaltung</span>
+          </div>
+          <div class="hero-ctas fade-up fade-up-delay-4">
+            <a href="https://calendly.com/matyjakevin/15min" target="_blank" rel="noopener" class="btn btn-primary">
+              Termin buchen →
+            </a>
+            <a href="#kontakt" class="btn btn-outline">Kontakt aufnehmen</a>
+          </div>
+        </div>
+
+        <div class="hero-kpi-card fade-up fade-up-delay-2">
+          <div class="kpi-title">Typische Ziele mit KI</div>
+          <div class="kpi-list">
+            <div class="kpi-item">
+              <div class="kpi-icon">📞</div>
+              <div class="kpi-text">
+                Erreichbarkeit verbessern
+                <small>Schnellere Reaktion auf Anfragen</small>
+              </div>
+            </div>
+            <div class="kpi-item">
+              <div class="kpi-icon">⚙️</div>
+              <div class="kpi-text">
+                Routinen automatisieren
+                <small>Wiederkehrende Aufgaben reduzieren</small>
+              </div>
+            </div>
+            <div class="kpi-item">
+              <div class="kpi-icon">👥</div>
+              <div class="kpi-text">
+                Team entlasten
+                <small>Mehr Kapazität für das Wesentliche</small>
+              </div>
+            </div>
+            <div class="kpi-item">
+              <div class="kpi-icon">📈</div>
+              <div class="kpi-text">
+                Weniger Lead-Verluste
+                <small>Chancen strukturiert nutzen</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PROBLEM / LÖSUNG ========== -->
+  <section id="loesungen">
+    <div class="container">
+      <div class="section-head fade-up">
+        <span class="section-label">Ausgangssituation</span>
+        <h2 class="section-title">Wo der Schuh drückt – und wie KI helfen kann</h2>
+        <p class="section-sub">
+          Viele Betriebe in der Fitness- und Wellnessbranche kennen diese Herausforderungen.
+          Hier lässt sich KI sinnvoll und praxistauglich einsetzen.
+        </p>
+        <div class="section-divider"></div>
+      </div>
+
+      <div class="ps-grid">
+
+        <div class="ps-card fade-up fade-up-delay-1">
+          <div class="ps-card-title">
+            <span class="ps-card-tag tag-problem">Herausforderungen</span>
+          </div>
+          <p class="ps-card-subtitle">Typische Engpässe im Alltag</p>
+          <ul class="ps-list">
+            <li class="ps-item">
+              <div class="ps-dot dot-problem">—</div>
+              <span class="ps-item-text">Viele Anfragen gleichzeitig und wenig Zeit im Team, um angemessen zu reagieren</span>
+            </li>
+            <li class="ps-item">
+              <div class="ps-dot dot-problem">—</div>
+              <span class="ps-item-text">Wiederkehrende Aufgaben blockieren Kapazität, die besser eingesetzt werden könnte</span>
+            </li>
+            <li class="ps-item">
+              <div class="ps-dot dot-problem">—</div>
+              <span class="ps-item-text">Interessenten werden zu spät oder unstrukturiert bearbeitet – Chancen gehen verloren</span>
+            </li>
+            <li class="ps-item">
+              <div class="ps-dot dot-problem">—</div>
+              <span class="ps-item-text">Interne Abläufe wachsen unsauber mit und erzeugen Reibungsverluste</span>
+            </li>
+            <li class="ps-item">
+              <div class="ps-dot dot-problem">—</div>
+              <span class="ps-item-text">Verwaltung und operative Teams arbeiten unter dauerhaftem Zeitdruck</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="ps-card fade-up fade-up-delay-2">
+          <div class="ps-card-title">
+            <span class="ps-card-tag tag-solution">Mit KI</span>
+          </div>
+          <p class="ps-card-subtitle">Was sich gezielt verbessern lässt</p>
+          <ul class="ps-list">
+            <li class="ps-item">
+              <div class="ps-dot dot-solution">✓</div>
+              <span class="ps-item-text">Schnellere Reaktionszeiten – auch außerhalb der Öffnungszeiten</span>
+            </li>
+            <li class="ps-item">
+              <div class="ps-dot dot-solution">✓</div>
+              <span class="ps-item-text">Weniger manueller Aufwand durch sinnvolle Automatisierung von Routinen</span>
+            </li>
+            <li class="ps-item">
+              <div class="ps-dot dot-solution">✓</div>
+              <span class="ps-item-text">Sauberere Prozesse mit klaren Übergaben und nachvollziehbaren Abläufen</span>
+            </li>
+            <li class="ps-item">
+              <div class="ps-dot dot-solution">✓</div>
+              <span class="ps-item-text">Mehr Kapazität für Service, Beratung und Verkauf im Team</span>
+            </li>
+            <li class="ps-item">
+              <div class="ps-dot dot-solution">✓</div>
+              <span class="ps-item-text">Weniger verlorene Chancen durch strukturierte Bearbeitung von Anfragen</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PROZESS ========== -->
+  <section id="prozess">
+    <div class="container">
+      <div class="section-head fade-up" style="text-align:center; max-width:560px; margin:0 auto 56px;">
+        <span class="section-label">Zusammenarbeit</span>
+        <h2 class="section-title">So läuft die Zusammenarbeit ab</h2>
+        <p class="section-sub" style="margin:0 auto;">
+          Vier klare Schritte – von der ersten Analyse bis zur praxistauglichen Lösung.
+        </p>
+        <div class="section-divider" style="margin:16px auto 0;"></div>
+      </div>
+
+      <div class="process-grid">
+
+        <div class="process-card fade-up fade-up-delay-1">
+          <div class="process-num">1</div>
+          <h3>Kurzgespräch</h3>
+          <p>
+            Ein kurzes Erstgespräch (15 Min.), in dem ich Ihre Abläufe, Engpässe
+            und Ziele kennenlernen. Kein Pitch – nur ein offenes Gespräch.
+          </p>
+        </div>
+
+        <div class="process-card fade-up fade-up-delay-2">
+          <div class="process-num">2</div>
+          <h3>Potenzial-Check</h3>
+          <p>
+            Identifikation der sinnvollsten KI-Anwendungsfälle mit dem größten
+            Hebel für Ihren Betrieb – priorisiert nach Aufwand und Nutzen.
+          </p>
+        </div>
+
+        <div class="process-card fade-up fade-up-delay-3">
+          <div class="process-num">3</div>
+          <h3>Konzept &amp; Umsetzung</h3>
+          <p>
+            Klare Empfehlung und Umsetzung in praxistauglichen, realistischen
+            Schritten – verständlich für Ihr Team, ohne unnötige Komplexität.
+          </p>
+        </div>
+
+        <div class="process-card fade-up fade-up-delay-4">
+          <div class="process-num">4</div>
+          <h3>Optimierung</h3>
+          <p>
+            Nachjustierung und Anpassung an den echten Alltag Ihres Teams –
+            damit die Lösung langfristig funktioniert und skaliert.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== ÜBER MICH ========== -->
+  <section id="ueber-mich">
+    <div class="container">
+      <div class="about-grid">
+
+        <div class="fade-up">
+          <div class="about-photo-card">
+            <img src="kevin-matyja.png" alt="Kevin Matyja – Aivelo">
+            <div class="about-photo-footer">
+              <div class="about-name">Kevin Matyja</div>
+              <div class="about-role">KI-Berater · Aivelo</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-content">
+          <span class="section-label fade-up">Über mich</span>
+          <h2 class="fade-up fade-up-delay-1">Praxisnah. Fokussiert. Verständlich.</h2>
+          <p class="about-text fade-up fade-up-delay-2">
+            Ich bin Kevin Matyja – IT-Fachmann mit mehrjähriger Erfahrung in der Branche
+            und einem intensiven Fokus auf künstliche Intelligenz seit rund zwei Jahren.
+            In dieser Zeit habe ich eine Reihe von Projekten umgesetzt, KI-Lösungen
+            konzipiert und in reale Betriebsabläufe integriert.<br><br>
+
+            Unter dem Namen <strong>Aivelo</strong> begleite ich Unternehmen aus Fitness,
+            Wellness, Spa und Gesundheit dabei, KI nicht als abstraktes Konzept,
+            sondern als konkretes Werkzeug zu nutzen. Mein Ansatz: Keine Theorie,
+            kein Hype – sondern nachvollziehbare Prozesse, die im Alltag funktionieren.
+          </p>
+
+          <div class="about-why fade-up fade-up-delay-3">
+            <div class="about-why-title">Warum Kunden mit mir arbeiten</div>
+            <ul class="about-why-list">
+              <li class="about-why-item">IT-Hintergrund mit KI-Praxisfokus</li>
+              <li class="about-why-item">Klare, verständliche Kommunikation</li>
+              <li class="about-why-item">Branchenfokus Fitness &amp; Wellness</li>
+              <li class="about-why-item">Prozesse statt Produktverkauf</li>
+              <li class="about-why-item">Pragmatische Umsetzung</li>
+              <li class="about-why-item">Kein unnötiges Tech-Wording</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FAQ ========== -->
+  <section id="faq">
+    <div class="container">
+      <div class="section-head fade-up" style="text-align:center; max-width:560px; margin:0 auto 56px;">
+        <span class="section-label">Häufige Fragen</span>
+        <h2 class="section-title">Antworten auf Ihre Fragen</h2>
+        <p class="section-sub" style="margin:0 auto;">
+          Was Entscheider häufig fragen – bevor sie den ersten Schritt machen.
+        </p>
+        <div class="section-divider" style="margin:16px auto 0;"></div>
+      </div>
+
+      <div class="faq-list">
+
+        <details class="faq-item fade-up fade-up-delay-1">
+          <summary>Was bringt mir KI konkret in meinem Studio oder Betrieb?</summary>
+          <div class="faq-answer">
+            Das hängt vom Betrieb ab – aber in der Regel lassen sich konkrete Vorteile in drei Bereichen erzielen:
+            schnellere Reaktionszeiten auf Anfragen, weniger manueller Aufwand bei wiederkehrenden Aufgaben und
+            strukturiertere Abläufe im Tagesgeschäft. Im Erstgespräch schauen wir gemeinsam, wo bei Ihnen
+            der größte Hebel liegt.
+          </div>
+        </details>
+
+        <details class="faq-item fade-up fade-up-delay-2">
+          <summary>Ist KI nur etwas für große Unternehmen?</summary>
+          <div class="faq-answer">
+            Nein. Viele sinnvolle KI-Anwendungen sind gerade für kleine und mittelgroße Betriebe relevant,
+            weil dort Ressourcen oft knapper sind. Die Lösungen, die ich einsetze, sind skalierbar –
+            und es geht nicht darum, ein riesiges System einzuführen, sondern gezielt dort anzusetzen,
+            wo es wirklich hilft.
+          </div>
+        </details>
+
+        <details class="faq-item fade-up fade-up-delay-3">
+          <summary>Muss mein Team technisch fit sein, um KI zu nutzen?</summary>
+          <div class="faq-answer">
+            Nein. Ein zentrales Kriterium bei der Auswahl und Umsetzung von Lösungen ist, dass Ihr Team
+            damit tatsächlich arbeiten kann – ohne technisches Vorwissen. Einfache Bedienbarkeit ist kein
+            Nice-to-have, sondern Bedingung. Wenn eine Lösung zu komplex für den Alltag ist, ist sie
+            die falsche Lösung.
+          </div>
+        </details>
+
+        <details class="faq-item fade-up fade-up-delay-4">
+          <summary>Kann man mit KI wirklich Kosten sparen und gleichzeitig Umsatz steigern?</summary>
+          <div class="faq-answer">
+            Beides ist möglich – aber ich verspreche keine konkreten Zahlen, ohne Ihren Betrieb zu kennen.
+            Effizienzgewinne durch reduzierte manuelle Arbeit können Kosten senken. Bessere Erreichbarkeit
+            und schnellere Bearbeitung von Anfragen können dazu beitragen, Umsatzpotenziale besser zu nutzen.
+            Wie groß der Effekt ist, hängt von Ihren aktuellen Prozessen ab.
+          </div>
+        </details>
+
+        <details class="faq-item fade-up">
+          <summary>Wie läuft die Zusammenarbeit ab?</summary>
+          <div class="faq-answer">
+            Sie beginnt mit einem kurzen, kostenlosen Erstgespräch (15 Min.). Danach analysiere ich,
+            welche KI-Anwendungsfälle für Ihren Betrieb sinnvoll sind. Auf dieser Basis erhalten Sie
+            eine klare Empfehlung – und wir entscheiden gemeinsam, welche Schritte als nächstes folgen.
+            Kein verstecktes Konzeptgeld, keine langen Einführungsphasen.
+          </div>
+        </details>
+
+        <details class="faq-item fade-up fade-up-delay-1">
+          <summary>Wie sieht es mit dem Datenschutz aus?</summary>
+          <div class="faq-answer">
+            Datenschutz ist ein wichtiger Faktor bei der Auswahl geeigneter Lösungen. Je nach Use Case und
+            Branche berücksichtige ich bei der Konzeption grundsätzliche datenschutzrechtliche Anforderungen
+            (z. B. DSGVO). Für eine verbindliche rechtliche Einschätzung empfehle ich dennoch, einen
+            Datenschutzbeauftragten hinzuzuziehen – insbesondere im Gesundheitsbereich.
+          </div>
+        </details>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CTA / KONTAKT ========== -->
+  <section id="kontakt" class="cta-section">
+    <div class="container">
+
+      <div class="cta-grid">
+
+        <div class="cta-content">
+          <span class="section-label fade-up">Kontakt</span>
+          <h2 class="fade-up fade-up-delay-1">
+            Interesse an einem<br>kurzen Austausch?
+          </h2>
+          <p class="cta-sub fade-up fade-up-delay-2">
+            Buchen Sie ein unverbindliches 15-Minuten-Gespräch. Kein Pitch,
+            kein Verkaufsdruck – nur ein offenes Gespräch darüber, ob und wie
+            KI in Ihrem Betrieb konkret helfen kann.
+          </p>
+          <div class="cta-buttons fade-up fade-up-delay-3">
+            <a href="https://calendly.com/matyjakevin/15min" target="_blank" rel="noopener" class="btn btn-primary">
+              Termin buchen →
+            </a>
+            <a href="mailto:kevin@aivelo.de" class="btn btn-outline">E-Mail senden</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="contact-card fade-up fade-up-delay-2">
+            <div class="contact-card-title">Kontaktdaten</div>
+            <ul class="contact-list">
+              <li class="contact-item">
+                <div class="contact-icon">👤</div>
+                <div class="contact-info">
+                  <div class="contact-info-label">Name</div>
+                  <span>Kevin Matyja · Aivelo</span>
+                </div>
+              </li>
+              <li class="contact-item">
+                <div class="contact-icon">✉️</div>
+                <div class="contact-info">
+                  <div class="contact-info-label">E-Mail</div>
+                  <a href="mailto:kevin@aivelo.de">kevin@aivelo.de</a>
+                </div>
+              </li>
+              <li class="contact-item">
+                <div class="contact-icon">📱</div>
+                <div class="contact-info">
+                  <div class="contact-info-label">Telefon</div>
+                  <a href="tel:+494074302522">+49 40 74302522</a>
+                </div>
+              </li>
+              <li class="contact-item">
+                <div class="contact-icon">🔗</div>
+                <div class="contact-info">
+                  <div class="contact-info-label">LinkedIn</div>
+                  <a href="https://www.linkedin.com/in/kevin-matyja-833a60294/" target="_blank" rel="noopener">
+                    Kevin Matyja
+                  </a>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="impressum-card fade-up fade-up-delay-3">
+            <div class="impressum-card-title">Rechtliches</div>
+            <div class="impressum-text">
+              <strong>Angaben gemäß § 5 TMG</strong>
+              Kevin Matyja · Aivelo<br>
+              Lengerckestrasse 40<br>
+              22041 Hamburg<br><br>
+              E-Mail: kevin@aivelo.de<br>
+              Telefon: +49 40 74302522<br>
+              USt-IdNr.: DE 455880871
+            </div>
+            <div class="impressum-links">
+              <a href="#">Impressum</a>
+              <a href="#">Datenschutz</a>
+            </div>
+            <p style="font-size:11px;color:var(--text-muted);margin-top:12px;">
+              * Platzhalter – bitte durch vollständige Impressums- und Datenschutzerklärung ersetzen.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <a href="#" class="footer-logo">
+          <img src="logo-aivelo.png" alt="Aivelo Logo">
+        </a>
+        <p class="footer-copy">
+          © 2025 Aivelo · Kevin Matyja. Alle Rechte vorbehalten.
+        </p>
+        <div class="footer-links">
+          <a href="#">Impressum</a>
+          <a href="#">Datenschutz</a>
+          <a href="https://www.linkedin.com/in/kevin-matyja-833a60294/" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========== SCRIPTS ========== -->
+  <script>
+    // ─── Scroll Animations ───────────────────────────────────────
+    const fadeEls = document.querySelectorAll('.fade-up');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    fadeEls.forEach(el => observer.observe(el));
+
+    // Trigger hero elements on load
+    window.addEventListener('load', () => {
+      document.querySelectorAll('.hero .fade-up').forEach(el => {
+        el.classList.add('visible');
+      });
+    });
+
+    // ─── Mobile Nav Toggle ───────────────────────────────────────
+    const toggle = document.getElementById('nav-toggle');
+    const mobileNav = document.getElementById('nav-mobile');
+
+    toggle.addEventListener('click', () => {
+      mobileNav.classList.toggle('open');
+    });
+
+    document.querySelectorAll('.mobile-link').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileNav.classList.remove('open');
+      });
+    });
+
+    // Close mobile nav on outside click
+    document.addEventListener('click', (e) => {
+      if (!toggle.contains(e.target) && !mobileNav.contains(e.target)) {
+        mobileNav.classList.remove('open');
+      }
+    });
+
+    // ─── Smooth Scroll ───────────────────────────────────────────
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (href === '#') return;
+        const target = document.querySelector(href);
+        if (target) {
+          e.preventDefault();
+          const navH = document.getElementById('main-nav').offsetHeight;
+          const top = target.getBoundingClientRect().top + window.scrollY - navH - 16;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+
 </body>
 </html>
